@@ -19,7 +19,7 @@ package org.apache.phoenix.schema;
 
 /**
  * 
- * Abstract class for columns of type {@link org.apache.phoenix.schema.PDataType#VARCHAR}
+ * Abstract class for columns of type {@link org.apache.phoenix.schema.Varchar}
  *
  * 
  * @since 0.1
@@ -28,7 +28,7 @@ public abstract class PStringColumn extends PBaseColumn {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 
 }

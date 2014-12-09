@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 
+import org.apache.phoenix.schema.PLong;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
 
@@ -57,7 +58,7 @@ public class LongMultiplyExpression extends MultiplyExpression {
 
     @Override
     public final PDataType getDataType() {
-        return PDataType.LONG;
+        return PLong.INSTANCE;
     }
 
 }

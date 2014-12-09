@@ -27,6 +27,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.apache.phoenix.schema.Char;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -48,29 +49,29 @@ public class KeyRangeIntersectTest extends TestCase {
     public static Collection<?> data() {
         return Arrays.asList(new Object[][] {
                 {
-                    PDataType.CHAR.getKeyRange(toBytes("C"), true, toBytes("E"), true),
-                    PDataType.CHAR.getKeyRange(toBytes("D"), true, toBytes("F"), true),
-                    PDataType.CHAR.getKeyRange(toBytes("D"), true, toBytes("E"), true)
+                    Char.INSTANCE.getKeyRange(toBytes("C"), true, toBytes("E"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("D"), true, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("D"), true, toBytes("E"), true)
                 },
                 {
-                    PDataType.CHAR.getKeyRange(toBytes("C"), true, toBytes("E"), true),
-                    PDataType.CHAR.getKeyRange(toBytes("D"), false, toBytes("F"), true),
-                    PDataType.CHAR.getKeyRange(toBytes("D"), false, toBytes("E"), true)
+                    Char.INSTANCE.getKeyRange(toBytes("C"), true, toBytes("E"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("D"), false, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("D"), false, toBytes("E"), true)
                 },
                 {
-                    PDataType.CHAR.getKeyRange(toBytes("C"), true, toBytes("E"), false),
-                    PDataType.CHAR.getKeyRange(toBytes("D"), false, toBytes("F"), true),
-                    PDataType.CHAR.getKeyRange(toBytes("D"), false, toBytes("E"), false)
+                    Char.INSTANCE.getKeyRange(toBytes("C"), true, toBytes("E"), false),
+                    Char.INSTANCE.getKeyRange(toBytes("D"), false, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("D"), false, toBytes("E"), false)
                 },
                 {
-                    PDataType.CHAR.getKeyRange(toBytes("C"), true, toBytes("E"), false),
-                    PDataType.CHAR.getKeyRange(toBytes("E"), false, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("C"), true, toBytes("E"), false),
+                    Char.INSTANCE.getKeyRange(toBytes("E"), false, toBytes("F"), true),
                     EMPTY_RANGE
                 },
                 {
                     EVERYTHING_RANGE,
-                    PDataType.CHAR.getKeyRange(toBytes("E"), false, toBytes("F"), true),
-                    PDataType.CHAR.getKeyRange(toBytes("E"), false, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("E"), false, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("E"), false, toBytes("F"), true),
                 },
                 {
                     EVERYTHING_RANGE,
@@ -84,7 +85,7 @@ public class KeyRangeIntersectTest extends TestCase {
                 },
                 {
                     EMPTY_RANGE,
-                    PDataType.CHAR.getKeyRange(toBytes("E"), false, toBytes("F"), true),
+                    Char.INSTANCE.getKeyRange(toBytes("E"), false, toBytes("F"), true),
                     EMPTY_RANGE
                 },
         });

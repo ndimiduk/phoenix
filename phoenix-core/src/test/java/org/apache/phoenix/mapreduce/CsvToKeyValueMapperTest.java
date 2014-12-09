@@ -23,7 +23,8 @@ import org.apache.commons.csv.CSVRecord;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.KeyValue;
-import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.*;
+import org.apache.phoenix.schema.PInteger;
 import org.apache.phoenix.util.ColumnInfo;
 import org.junit.Test;
 
@@ -63,9 +64,9 @@ public class CsvToKeyValueMapperTest {
     @Test
     public void testBuildColumnInfoList() {
         List<ColumnInfo> columnInfoList = ImmutableList.of(
-                new ColumnInfo("idCol", PDataType.INTEGER.getSqlType()),
-                new ColumnInfo("unsignedIntCol", PDataType.UNSIGNED_INT.getSqlType()),
-                new ColumnInfo("stringArrayCol", PDataType.INTEGER_ARRAY.getSqlType()));
+                new ColumnInfo("idCol", PInteger.INSTANCE.getSqlType()),
+                new ColumnInfo("unsignedIntCol", UnsignedInt.INSTANCE.getSqlType()),
+                new ColumnInfo("stringArrayCol", PIntegerArray.INSTANCE.getSqlType()));
 
         Configuration conf = new Configuration();
         CsvToKeyValueMapper.configureColumnInfoList(conf, columnInfoList);
@@ -78,10 +79,10 @@ public class CsvToKeyValueMapperTest {
     public void testBuildColumnInfoList_ContainingNulls() {
         // A null value in the column info list means "skip that column in the input"
         List<ColumnInfo> columnInfoListWithNull = Lists.newArrayList(
-                new ColumnInfo("idCol", PDataType.INTEGER.getSqlType()),
+                new ColumnInfo("idCol", PInteger.INSTANCE.getSqlType()),
                 null,
-                new ColumnInfo("unsignedIntCol", PDataType.UNSIGNED_INT.getSqlType()),
-                new ColumnInfo("stringArrayCol", PDataType.INTEGER_ARRAY.getSqlType()));
+                new ColumnInfo("unsignedIntCol", UnsignedInt.INSTANCE.getSqlType()),
+                new ColumnInfo("stringArrayCol", PIntegerArray.INSTANCE.getSqlType()));
 
         Configuration conf = new Configuration();
         CsvToKeyValueMapper.configureColumnInfoList(conf, columnInfoListWithNull);

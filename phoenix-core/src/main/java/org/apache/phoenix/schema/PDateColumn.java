@@ -20,6 +20,6 @@ package org.apache.phoenix.schema;
 abstract public class PDateColumn extends PBaseColumn {
     @Override
     public PDataType getDataType() {
-        return PDataType.DATE;
+        return PDate.INSTANCE;
     }
 }

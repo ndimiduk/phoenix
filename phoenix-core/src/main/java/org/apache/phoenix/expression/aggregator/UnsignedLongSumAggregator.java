@@ -19,6 +19,7 @@ package org.apache.phoenix.expression.aggregator;
 
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.UnsignedLong;
 
 /**
  * 
@@ -36,7 +37,7 @@ public class UnsignedLongSumAggregator extends NumberSumAggregator {
     
     @Override
     protected PDataType getInputDataType() {
-        return PDataType.UNSIGNED_LONG;
+        return UnsignedLong.INSTANCE;
     }
 
 }

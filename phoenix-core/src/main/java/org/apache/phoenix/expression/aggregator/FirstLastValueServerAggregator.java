@@ -19,6 +19,7 @@ package org.apache.phoenix.expression.aggregator;
 
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varbinary;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.SizedUtil;
@@ -188,7 +189,7 @@ public class FirstLastValueServerAggregator extends BaseAggregator {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARBINARY;
+        return Varbinary.INSTANCE;
     }
 
     public void init(List<Expression> children, boolean isAscending, int offset) {

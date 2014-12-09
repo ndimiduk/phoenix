@@ -30,7 +30,10 @@ import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.parse.*;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PTimestamp;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 
@@ -43,8 +46,8 @@ import org.apache.phoenix.schema.tuple.Tuple;
  * @since 0.1
  */
 @BuiltInFunction(name=ToCharFunction.NAME, nodeClass=ToCharParseNode.class, args={
-    @Argument(allowedTypes={PDataType.TIMESTAMP, PDataType.DECIMAL}),
-    @Argument(allowedTypes={PDataType.VARCHAR},isConstant=true,defaultValue="null") } )
+    @Argument(allowedTypes={PTimestamp.class, Decimal.class}),
+    @Argument(allowedTypes={Varchar.class},isConstant=true,defaultValue="null") } )
 public class ToCharFunction extends ScalarFunction {
     public static final String NAME = "TO_CHAR";
     private String formatString;
@@ -99,7 +102,7 @@ public class ToCharFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 
     @Override

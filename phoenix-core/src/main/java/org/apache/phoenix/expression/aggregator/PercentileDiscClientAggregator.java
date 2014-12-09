@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.*;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -89,7 +90,7 @@ public class PercentileDiscClientAggregator extends DistinctValueWithCountClient
 	@Override
 	protected int getBufferLength() {
 		// Will be used in the aggregate() call
-		return PDataType.DECIMAL.getByteSize();
+		return Decimal.INSTANCE.getByteSize();
 	}
 
     @Override

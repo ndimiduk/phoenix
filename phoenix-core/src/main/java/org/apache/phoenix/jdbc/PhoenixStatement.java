@@ -111,6 +111,7 @@ import org.apache.phoenix.schema.RowKeyValueAccessor;
 import org.apache.phoenix.schema.Sequence;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.TableRef;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.stats.StatisticsCollectionScope;
 import org.apache.phoenix.schema.tuple.SingleKeyValueTuple;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -326,7 +327,7 @@ public class PhoenixStatement implements Statement, SQLCloseable, org.apache.pho
     }
     
     private static final byte[] EXPLAIN_PLAN_FAMILY = QueryConstants.SINGLE_COLUMN_FAMILY;
-    private static final byte[] EXPLAIN_PLAN_COLUMN = PDataType.VARCHAR.toBytes("Plan");
+    private static final byte[] EXPLAIN_PLAN_COLUMN = Varchar.INSTANCE.toBytes("Plan");
     private static final String EXPLAIN_PLAN_ALIAS = "PLAN";
     private static final String EXPLAIN_PLAN_TABLE_NAME = "PLAN_TABLE";
     private static final PDatum EXPLAIN_PLAN_DATUM = new PDatum() {
@@ -336,7 +337,7 @@ public class PhoenixStatement implements Statement, SQLCloseable, org.apache.pho
         }
         @Override
         public PDataType getDataType() {
-            return PDataType.VARCHAR;
+            return Varchar.INSTANCE;
         }
         @Override
         public Integer getMaxLength() {
@@ -381,7 +382,7 @@ public class PhoenixStatement implements Statement, SQLCloseable, org.apache.pho
             List<String> planSteps = plan.getExplainPlan().getPlanSteps();
             List<Tuple> tuples = Lists.newArrayListWithExpectedSize(planSteps.size());
             for (String planStep : planSteps) {
-                Tuple tuple = new SingleKeyValueTuple(KeyValueUtil.newKeyValue(PDataType.VARCHAR.toBytes(planStep), EXPLAIN_PLAN_FAMILY, EXPLAIN_PLAN_COLUMN, MetaDataProtocol.MIN_TABLE_TIMESTAMP, ByteUtil.EMPTY_BYTE_ARRAY));
+                Tuple tuple = new SingleKeyValueTuple(KeyValueUtil.newKeyValue(Varchar.INSTANCE.toBytes(planStep), EXPLAIN_PLAN_FAMILY, EXPLAIN_PLAN_COLUMN, MetaDataProtocol.MIN_TABLE_TIMESTAMP, ByteUtil.EMPTY_BYTE_ARRAY));
                 tuples.add(tuple);
             }
             final ResultIterator iterator = new MaterializedResultIterator(tuples);

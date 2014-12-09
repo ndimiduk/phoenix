@@ -25,6 +25,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.visitor.ExpressionVisitor;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 
@@ -76,10 +77,10 @@ public class StringConcatExpression extends BaseCompoundExpression {
             SortOrder sortOrder = children.get(i).getSortOrder();
             // We could potentially not invert the bytes, but we might as well since we're allocating
             // additional space here anyway.
-            if (childType.isCoercibleTo(PDataType.VARCHAR)) {
+            if (childType.isCoercibleTo(Varchar.INSTANCE)) {
                 result = ByteUtil.concat(result, ByteUtil.concat(sortOrder, ptr));
             } else {
-                result = ByteUtil.concat(result, PDataType.VARCHAR.toBytes(childType.toObject(ptr, sortOrder).toString()));
+                result = ByteUtil.concat(result, Varchar.INSTANCE.toBytes(childType.toObject(ptr, sortOrder).toString()));
             }
         }
         ptr.set(result);
@@ -88,6 +89,6 @@ public class StringConcatExpression extends BaseCompoundExpression {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 }

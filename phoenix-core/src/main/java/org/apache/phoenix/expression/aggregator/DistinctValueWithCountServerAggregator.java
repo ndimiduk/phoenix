@@ -29,6 +29,7 @@ import org.apache.phoenix.query.QueryServices;
 import org.apache.phoenix.query.QueryServicesOptions;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varbinary;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.SizedUtil;
@@ -138,7 +139,7 @@ public class DistinctValueWithCountServerAggregator extends BaseAggregator {
 
     @Override
     public final PDataType getDataType() {
-        return PDataType.VARBINARY;
+        return Varbinary.INSTANCE;
     }
 
     @Override

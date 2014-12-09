@@ -39,6 +39,7 @@ import org.apache.phoenix.parse.HintNode;
 import org.apache.phoenix.parse.HintNode.Hint;
 import org.apache.phoenix.query.KeyRange;
 import org.apache.phoenix.query.KeyRange.Bound;
+import org.apache.phoenix.schema.PInteger;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.RowKeySchema;
 import org.apache.phoenix.schema.SortOrder;
@@ -162,7 +163,7 @@ public abstract class ExplainTable {
         Integer groupByLimit = null;
         byte[] groupByLimitBytes = scan.getAttribute(BaseScannerRegionObserver.GROUP_BY_LIMIT);
         if (groupByLimitBytes != null) {
-            groupByLimit = (Integer)PDataType.INTEGER.toObject(groupByLimitBytes);
+            groupByLimit = (Integer) PInteger.INSTANCE.toObject(groupByLimitBytes);
         }
         groupBy.explain(planSteps, groupByLimit);
     }

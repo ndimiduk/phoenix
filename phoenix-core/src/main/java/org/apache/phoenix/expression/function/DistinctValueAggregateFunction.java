@@ -28,6 +28,7 @@ import org.apache.phoenix.expression.aggregator.DistinctValueWithCountServerAggr
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varbinary;
 
 @BuiltInFunction(name=DistinctValueAggregateFunction.NAME, args= {@Argument()} )
 public class DistinctValueAggregateFunction extends DistinctValueWithCountAggregateFunction {
@@ -47,7 +48,8 @@ public class DistinctValueAggregateFunction extends DistinctValueWithCountAggreg
 
     @Override
     public DistinctValueWithCountClientAggregator newClientAggregator() {
-        PDataType baseType = getAggregatorExpression().getDataType().isArrayType() ? PDataType.VARBINARY : getAggregatorExpression().getDataType();
+        PDataType baseType = getAggregatorExpression().getDataType().isArrayType() ?
+            Varbinary.INSTANCE : getAggregatorExpression().getDataType();
         PDataType resultType = PDataType.fromTypeId(baseType.getSqlType() + PDataType.ARRAY_TYPE_BASE);
         return new DistinctValueClientAggregator(getAggregatorExpression().getSortOrder(), baseType, resultType);
     }
@@ -59,7 +61,7 @@ public class DistinctValueAggregateFunction extends DistinctValueWithCountAggreg
 
     @Override
     public PDataType getDataType() {
-        PDataType baseType = getAggregatorExpression().getDataType().isArrayType() ? PDataType.VARBINARY : getAggregatorExpression().getDataType();
+        PDataType baseType = getAggregatorExpression().getDataType().isArrayType() ? Varbinary.INSTANCE : getAggregatorExpression().getDataType();
         return PDataType.fromTypeId(baseType.getSqlType() + PDataType.ARRAY_TYPE_BASE);
     }
 

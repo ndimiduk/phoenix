@@ -33,8 +33,8 @@ public enum PIndexState {
 
     private PIndexState(String value) {
         this.serializedValue = value;
-        this.serializedBytes = PDataType.VARCHAR.toBytes(value);
-        this.nameBytesValue = PDataType.VARCHAR.toBytes(this.toString());
+        this.serializedBytes = Varchar.INSTANCE.toBytes(value);
+        this.nameBytesValue = Varchar.INSTANCE.toBytes(this.toString());
     }
 
     public String getSerializedValue() {

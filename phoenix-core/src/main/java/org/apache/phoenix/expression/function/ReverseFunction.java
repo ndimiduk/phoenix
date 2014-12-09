@@ -28,11 +28,12 @@ import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.StringUtil;
 
 @BuiltInFunction(name=ReverseFunction.NAME,  args={
-        @Argument(allowedTypes={PDataType.VARCHAR})} )
+        @Argument(allowedTypes={Varchar.class})} )
 public class ReverseFunction extends ScalarFunction {
     public static final String NAME = "REVERSE";
     
@@ -77,7 +78,7 @@ public class ReverseFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 
     @Override

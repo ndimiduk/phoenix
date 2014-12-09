@@ -26,6 +26,8 @@ import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PTable.IndexType;
+import org.apache.phoenix.schema.UnsignedTinyint;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 
@@ -40,7 +42,7 @@ import org.apache.phoenix.schema.tuple.Tuple;
  * @since 2.2
  */
 @BuiltInFunction(name=SQLIndexTypeFunction.NAME, args= {
-    @Argument(allowedTypes=PDataType.UNSIGNED_TINYINT)} )
+    @Argument(allowedTypes= UnsignedTinyint.class)} )
 public class SQLIndexTypeFunction extends ScalarFunction {
     public static final String NAME = "SQLIndexType";
 
@@ -67,7 +69,7 @@ public class SQLIndexTypeFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
     
     @Override

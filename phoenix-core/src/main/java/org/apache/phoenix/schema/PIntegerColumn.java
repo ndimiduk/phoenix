@@ -28,6 +28,6 @@ package org.apache.phoenix.schema;
 public abstract class PIntegerColumn extends PBaseColumn {
     @Override
     public final PDataType getDataType() {
-        return PDataType.INTEGER;
+        return PInteger.INSTANCE;
     }
 }

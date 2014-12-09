@@ -33,6 +33,7 @@ import org.apache.hadoop.io.WritableUtils;
 import org.apache.phoenix.hbase.index.util.ImmutableBytesPtr;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varbinary;
 import org.apache.phoenix.schema.tuple.SingleKeyValueTuple;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.iq80.snappy.Snappy;
@@ -111,7 +112,7 @@ public abstract class DistinctValueWithCountClientAggregator extends BaseAggrega
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARBINARY;
+        return Varbinary.INSTANCE;
     }
 
     @Override

@@ -21,6 +21,7 @@ package org.apache.phoenix.expression;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varbinary;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 public class RowKeyExpression extends BaseTerminalExpression {
@@ -37,7 +38,7 @@ public class RowKeyExpression extends BaseTerminalExpression {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARBINARY;
+        return Varbinary.INSTANCE;
     }
 
 }

@@ -59,6 +59,7 @@ import org.apache.phoenix.schema.PTable.LinkType;
 import org.apache.phoenix.schema.PTableType;
 import org.apache.phoenix.schema.RowKeyValueAccessor;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.ResultTuple;
 import org.apache.phoenix.schema.tuple.SingleKeyValueTuple;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -944,7 +945,7 @@ public class PhoenixDatabaseMetaData implements DatabaseMetaData, org.apache.pho
         }
         @Override
         public PDataType getDataType() {
-            return PDataType.VARCHAR;
+            return Varchar.INSTANCE;
         }
         @Override
         public Integer getMaxLength() {

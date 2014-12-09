@@ -66,6 +66,7 @@ import org.apache.phoenix.query.ConnectionQueryServices;
 import org.apache.phoenix.query.QueryServices;
 import org.apache.phoenix.query.QueryServicesOptions;
 import org.apache.phoenix.schema.PArrayDataType;
+import org.apache.phoenix.schema.PBoolean;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PTable;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -202,7 +203,7 @@ public class HashJoinPlan extends DelegateQueryPlan {
             Expression rhsExpression, List<ImmutableBytesWritable> rhsValues, 
             ImmutableBytesWritable ptr, boolean hasFilters) throws SQLException {
         if (rhsValues.isEmpty())
-            return LiteralExpression.newConstant(null, PDataType.BOOLEAN, Determinism.ALWAYS);
+            return LiteralExpression.newConstant(null, PBoolean.INSTANCE, Determinism.ALWAYS);
         
         PDataType type = rhsExpression.getDataType();
         if (!useInClause(hasFilters)) {

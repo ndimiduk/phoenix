@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.exception.ValueTypeIncompatibleException;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -61,7 +62,7 @@ public class DecimalAddExpression extends AddExpression {
             
             PDataType childType = childExpr.getDataType();
             SortOrder childSortOrder = childExpr.getSortOrder();
-            BigDecimal bd = (BigDecimal)PDataType.DECIMAL.toObject(ptr, childType, childSortOrder);
+            BigDecimal bd = (BigDecimal) Decimal.INSTANCE.toObject(ptr, childType, childSortOrder);
             
             if (result == null) {
                 result = bd;
@@ -73,15 +74,15 @@ public class DecimalAddExpression extends AddExpression {
             result = NumberUtil.setDecimalWidthAndScale(result, maxLength, scale);
         }
         if (result == null) {
-            throw new ValueTypeIncompatibleException(PDataType.DECIMAL, maxLength, scale);
+            throw new ValueTypeIncompatibleException(Decimal.INSTANCE, maxLength, scale);
         }
-        ptr.set(PDataType.DECIMAL.toBytes(result));
+        ptr.set(Decimal.INSTANCE.toBytes(result));
         return true;
     }
 
     @Override
     public PDataType getDataType() {
-        return PDataType.DECIMAL;
+        return Decimal.INSTANCE;
     }
 
     @Override

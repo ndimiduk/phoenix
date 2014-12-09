@@ -34,6 +34,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.visitor.ExpressionVisitor;
 import org.apache.phoenix.query.QueryConstants;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varbinary;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.SchemaUtil;
@@ -98,7 +99,7 @@ public class RowValueConstructorExpression extends BaseCompoundExpression {
     
     @Override
     public PDataType getDataType() {
-        return PDataType.VARBINARY;
+        return Varbinary.INSTANCE;
     }
     
     @Override

@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.*;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -88,13 +89,13 @@ public class PercentileClientAggregator extends DistinctValueWithCountClientAggr
         if (buffer == null) {
             initBuffer();
         }
-        buffer = PDataType.DECIMAL.toBytes(this.cachedResult);
+        buffer = Decimal.INSTANCE.toBytes(this.cachedResult);
         ptr.set(buffer);
         return true;
     }
 
     @Override
     protected PDataType getResultDataType() {
-        return PDataType.DECIMAL;
+        return Decimal.INSTANCE;
     }
 }

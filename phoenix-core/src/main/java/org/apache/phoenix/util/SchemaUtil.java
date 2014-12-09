@@ -60,6 +60,8 @@ import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.ValueSchema.Field;
 
 import com.google.common.base.Preconditions;
+import org.apache.phoenix.schema.Varbinary;
+import org.apache.phoenix.schema.Varchar;
 
 /**
  * 
@@ -82,7 +84,7 @@ public class SchemaUtil {
     
         @Override
         public PDataType getDataType() {
-            return PDataType.VARBINARY;
+            return Varbinary.INSTANCE;
         }
     
         @Override
@@ -343,7 +345,7 @@ public class SchemaUtil {
     }
 
     public static String toString(PDataType type, byte[] value) {
-        boolean isString = type.isCoercibleTo(PDataType.VARCHAR);
+        boolean isString = type.isCoercibleTo(Varchar.INSTANCE);
         return isString ? ("'" + type.toObject(value).toString() + "'") : type.toObject(value).toString();
     }
 

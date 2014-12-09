@@ -28,7 +28,31 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.phoenix.pig.writable.PhoenixPigDBWritable;
+import org.apache.phoenix.schema.Binary;
+import org.apache.phoenix.schema.Char;
+import org.apache.phoenix.schema.Decimal;
+import org.apache.phoenix.schema.PBoolean;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PDate;
+import org.apache.phoenix.schema.PDouble;
+import org.apache.phoenix.schema.PFloat;
+import org.apache.phoenix.schema.PInteger;
+import org.apache.phoenix.schema.PLong;
+import org.apache.phoenix.schema.PTime;
+import org.apache.phoenix.schema.PTimestamp;
+import org.apache.phoenix.schema.Smallint;
+import org.apache.phoenix.schema.Tinyint;
+import org.apache.phoenix.schema.UnsignedDate;
+import org.apache.phoenix.schema.UnsignedDouble;
+import org.apache.phoenix.schema.UnsignedFloat;
+import org.apache.phoenix.schema.UnsignedInt;
+import org.apache.phoenix.schema.UnsignedLong;
+import org.apache.phoenix.schema.UnsignedSmallint;
+import org.apache.phoenix.schema.UnsignedTime;
+import org.apache.phoenix.schema.UnsignedTimestamp;
+import org.apache.phoenix.schema.UnsignedTinyint;
+import org.apache.phoenix.schema.Varbinary;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.pig.PigException;
 import org.apache.pig.ResourceSchema.ResourceFieldSchema;
 import org.apache.pig.backend.hadoop.hbase.HBaseBinaryConverter;
@@ -47,7 +71,7 @@ public final class TypeUtil {
 	
     private static final Log LOG = LogFactory.getLog(TypeUtil.class);
     private static final HBaseBinaryConverter binaryConverter = new HBaseBinaryConverter ();
-	private static final ImmutableMap<PDataType,Byte> phoenixTypeToPigDataType = init();	
+	private static final ImmutableMap<PDataType,Byte> phoenixTypeToPigDataType = init();
 	
 	private TypeUtil(){
 	}
@@ -58,29 +82,29 @@ public final class TypeUtil {
 	 */
 	private static ImmutableMap<PDataType, Byte> init() {
         final ImmutableMap.Builder<PDataType,Byte> builder = new Builder<PDataType,Byte> ();
-        builder.put(PDataType.LONG,DataType.LONG);
-        builder.put(PDataType.VARBINARY,DataType.BYTEARRAY);
-        builder.put(PDataType.CHAR,DataType.CHARARRAY);
-        builder.put(PDataType.VARCHAR,DataType.CHARARRAY);
-        builder.put(PDataType.DOUBLE,DataType.DOUBLE);
-        builder.put(PDataType.FLOAT,DataType.FLOAT);
-        builder.put(PDataType.INTEGER,DataType.INTEGER);
-        builder.put(PDataType.TINYINT,DataType.INTEGER);
-        builder.put(PDataType.SMALLINT,DataType.INTEGER);
-        builder.put(PDataType.DECIMAL,DataType.BIGDECIMAL);
-        builder.put(PDataType.TIME,DataType.DATETIME);
-        builder.put(PDataType.TIMESTAMP,DataType.DATETIME);
-        builder.put(PDataType.BOOLEAN,DataType.BOOLEAN);
-        builder.put(PDataType.DATE,DataType.DATETIME);
-        builder.put(PDataType.UNSIGNED_DATE,DataType.DATETIME);
-        builder.put(PDataType.UNSIGNED_DOUBLE,DataType.DOUBLE);
-        builder.put(PDataType.UNSIGNED_FLOAT,DataType.FLOAT);
-        builder.put(PDataType.UNSIGNED_INT,DataType.INTEGER);
-        builder.put(PDataType.UNSIGNED_LONG,DataType.LONG);
-        builder.put(PDataType.UNSIGNED_SMALLINT,DataType.INTEGER);
-        builder.put(PDataType.UNSIGNED_TIME,DataType.DATETIME);
-        builder.put(PDataType.UNSIGNED_TIMESTAMP,DataType.DATETIME);
-        builder.put(PDataType.UNSIGNED_TINYINT,DataType.INTEGER);
+        builder.put(PLong.INSTANCE,DataType.LONG);
+        builder.put(Varbinary.INSTANCE,DataType.BYTEARRAY);
+        builder.put(Char.INSTANCE,DataType.CHARARRAY);
+        builder.put(Varchar.INSTANCE,DataType.CHARARRAY);
+        builder.put(PDouble.INSTANCE,DataType.DOUBLE);
+        builder.put(PFloat.INSTANCE,DataType.FLOAT);
+        builder.put(PInteger.INSTANCE,DataType.INTEGER);
+        builder.put(Tinyint.INSTANCE,DataType.INTEGER);
+        builder.put(Smallint.INSTANCE,DataType.INTEGER);
+        builder.put(Decimal.INSTANCE,DataType.BIGDECIMAL);
+        builder.put(PTime.INSTANCE,DataType.DATETIME);
+        builder.put(PTimestamp.INSTANCE,DataType.DATETIME);
+        builder.put(PBoolean.INSTANCE,DataType.BOOLEAN);
+        builder.put(PDate.INSTANCE,DataType.DATETIME);
+        builder.put(UnsignedDate.INSTANCE,DataType.DATETIME);
+        builder.put(UnsignedDouble.INSTANCE,DataType.DOUBLE);
+        builder.put(UnsignedFloat.INSTANCE,DataType.FLOAT);
+        builder.put(UnsignedInt.INSTANCE,DataType.INTEGER);
+        builder.put(UnsignedLong.INSTANCE,DataType.LONG);
+        builder.put(UnsignedSmallint.INSTANCE,DataType.INTEGER);
+        builder.put(UnsignedTime.INSTANCE,DataType.DATETIME);
+        builder.put(UnsignedTimestamp.INSTANCE,DataType.DATETIME);
+        builder.put(UnsignedTinyint.INSTANCE,DataType.INTEGER);
         return builder.build();
     }
     /**
@@ -102,33 +126,33 @@ public final class TypeUtil {
 
 		switch (type) {
 		case DataType.BYTEARRAY:
-			sqlType = PDataType.VARBINARY;
+			sqlType = Varbinary.INSTANCE;
 			break;
 		case DataType.CHARARRAY:
-			sqlType = PDataType.VARCHAR;
+			sqlType = Varchar.INSTANCE;
 			break;
 		case DataType.DOUBLE:
 		case DataType.BIGDECIMAL:
-			sqlType = PDataType.DOUBLE;
+			sqlType = PDouble.INSTANCE;
 			break;
 		case DataType.FLOAT:
-			sqlType = PDataType.FLOAT;
+			sqlType = PFloat.INSTANCE;
 			break;
 		case DataType.INTEGER:
-			sqlType = PDataType.INTEGER;
+			sqlType = PInteger.INSTANCE;
 			break;
 		case DataType.LONG:
 		case DataType.BIGINTEGER:
-			sqlType = PDataType.LONG;
+			sqlType = PLong.INSTANCE;
 			break;
 		case DataType.BOOLEAN:
-			sqlType = PDataType.BOOLEAN;
+			sqlType = PBoolean.INSTANCE;
 			break;
 		case DataType.DATETIME:
-			sqlType = PDataType.DATE;
+			sqlType = PDate.INSTANCE;
 			break;
 		case DataType.BYTE:
-			sqlType = PDataType.TINYINT;
+			sqlType = Tinyint.INSTANCE;
 			break;
 		default:
 			throw new RuntimeException("Unknown type " + obj.getClass().getName()
@@ -156,17 +180,17 @@ public final class TypeUtil {
 			return null;
 		}
 
-		if(inferredPType == PDataType.VARBINARY) {
+		if(inferredPType == Varbinary.INSTANCE) {
 			try {
 				o = castBytes(o, targetPhoenixType);
-				if(targetPhoenixType != PDataType.VARBINARY && targetPhoenixType != PDataType.BINARY) {
+				if(targetPhoenixType != Varbinary.INSTANCE && targetPhoenixType != Binary.INSTANCE) {
 					inferredPType = getType(o, DataType.findType(o));	
 				}
 			} catch (IOException e) {
 				throw new RuntimeException("Error while casting bytes for object " +o);
 			}
 		}
-		if(inferredPType == PDataType.DATE) {
+		if(inferredPType == PDate.INSTANCE) {
 			int inferredSqlType = targetPhoenixType.getSqlType();
 
 			if(inferredSqlType == Types.DATE) {
@@ -200,36 +224,27 @@ public final class TypeUtil {
 	 */
 	private static Object castBytes(Object o, PDataType targetPhoenixType) throws IOException {
         byte[] bytes = ((DataByteArray)o).get();
-        
-        switch(targetPhoenixType) {
-        case CHAR:
-        case VARCHAR:
+
+        if (PDataType.equalsAny(targetPhoenixType, Char.INSTANCE, Varchar.INSTANCE)) {
             return binaryConverter.bytesToCharArray(bytes);
-        case UNSIGNED_SMALLINT:
-        case SMALLINT:
+        } else if (PDataType.equalsAny(targetPhoenixType, UnsignedSmallint.INSTANCE, Smallint.INSTANCE)) {
             return binaryConverter.bytesToInteger(bytes).shortValue();
-        case UNSIGNED_TINYINT:
-        case TINYINT:
+        } else if (PDataType.equalsAny(targetPhoenixType, UnsignedTinyint.INSTANCE, Tinyint.INSTANCE)) {
             return binaryConverter.bytesToInteger(bytes).byteValue();
-        case UNSIGNED_INT:
-        case INTEGER:
-        	return binaryConverter.bytesToInteger(bytes);
-        case BOOLEAN:
+        } else if (PDataType.equalsAny(targetPhoenixType, UnsignedInt.INSTANCE, PInteger.INSTANCE)) {
+            return binaryConverter.bytesToInteger(bytes);
+        } else if (targetPhoenixType.equals(PBoolean.INSTANCE)) {
             return binaryConverter.bytesToBoolean(bytes);
-        case FLOAT:
-        case UNSIGNED_FLOAT:
+        } else if (PDataType.equalsAny(targetPhoenixType, PFloat.INSTANCE, UnsignedFloat.INSTANCE)) {
             return binaryConverter.bytesToFloat(bytes);
-        case DOUBLE:
-        case UNSIGNED_DOUBLE:
+        } else if (PDataType.equalsAny(targetPhoenixType, PDouble.INSTANCE, UnsignedDouble.INSTANCE)) {
             return binaryConverter.bytesToDouble(bytes);
-        case UNSIGNED_LONG:
-        case LONG:
+        } else if (PDataType.equalsAny(targetPhoenixType, UnsignedLong.INSTANCE, PLong.INSTANCE)) {
             return binaryConverter.bytesToLong(bytes);
-        case VARBINARY : 
-        case BINARY:
-        	 return bytes;
-        default:
-        	return o;
+        } else if (PDataType.equalsAny(targetPhoenixType, Varbinary.INSTANCE, Binary.INSTANCE)) {
+            return bytes;
+        } else {
+            return o;
         }        
     }
     
@@ -259,7 +274,7 @@ public final class TypeUtil {
                 
                 switch(fieldSchema.getType()) {
                     case DataType.BYTEARRAY:
-                        byte[] bytes = PDataType.fromTypeId(PDataType.BINARY.getSqlType()).toBytes(object);
+                        byte[] bytes = PDataType.fromTypeId(Binary.INSTANCE.getSqlType()).toBytes(object);
                         tuple.set(i,new DataByteArray(bytes,0,bytes.length));
                         break;
                     case DataType.CHARARRAY:

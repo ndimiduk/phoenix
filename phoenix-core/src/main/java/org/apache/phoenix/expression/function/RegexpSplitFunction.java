@@ -27,6 +27,8 @@ import org.apache.phoenix.expression.LiteralExpression;
 import org.apache.phoenix.parse.FunctionParseNode;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PhoenixArray;
+import org.apache.phoenix.schema.Varchar;
+import org.apache.phoenix.schema.VarcharArray;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 
@@ -42,11 +44,11 @@ import com.google.common.collect.Lists;
  * {@code source_str} is the string in which we want to split. {@code split_pattern} is a
  * Java compatible regular expression string to split the source string.
  *
- * The function returns a {@link org.apache.phoenix.schema.PDataType#VARCHAR_ARRAY}
+ * The function returns a {@link org.apache.phoenix.schema.VarcharArray}
  */
  @FunctionParseNode.BuiltInFunction(name=RegexpSplitFunction.NAME, args= {
-        @FunctionParseNode.Argument(allowedTypes={PDataType.VARCHAR}),
-        @FunctionParseNode.Argument(allowedTypes={PDataType.VARCHAR})})
+        @FunctionParseNode.Argument(allowedTypes={Varchar.class}),
+        @FunctionParseNode.Argument(allowedTypes={Varchar.class})})
 public class RegexpSplitFunction extends ScalarFunction {
 
     public static final String NAME = "REGEXP_SPLIT";
@@ -88,7 +90,7 @@ public class RegexpSplitFunction extends ScalarFunction {
         }
 
         Expression sourceStrExpression = children.get(0);
-        String sourceStr = (String)PDataType.VARCHAR.toObject(ptr, sourceStrExpression.getSortOrder());
+        String sourceStr = (String)Varchar.INSTANCE.toObject(ptr, sourceStrExpression.getSortOrder());
         if (sourceStr == null) { // sourceStr evaluated to null
             ptr.set(ByteUtil.EMPTY_BYTE_ARRAY);
             return true;
@@ -108,20 +110,20 @@ public class RegexpSplitFunction extends ScalarFunction {
                 return true; // ptr is already set to null
             }
 
-            String patternStr = (String) PDataType.VARCHAR.toObject(
+            String patternStr = (String) Varchar.INSTANCE.toObject(
                     ptr, patternExpression.getSortOrder());
             splitter = Splitter.onPattern(patternStr);
         }
 
         List<String> splitStrings = Lists.newArrayList(splitter.split(sourceStr));
-        PhoenixArray splitArray = new PhoenixArray(PDataType.VARCHAR, splitStrings.toArray());
-        ptr.set(PDataType.VARCHAR_ARRAY.toBytes(splitArray));
+        PhoenixArray splitArray = new PhoenixArray(Varchar.INSTANCE, splitStrings.toArray());
+        ptr.set(VarcharArray.INSTANCE.toBytes(splitArray));
         return true;
     }
 
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR_ARRAY;
+        return VarcharArray.INSTANCE;
     }
 }

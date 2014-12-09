@@ -27,13 +27,15 @@ import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode;
 import org.apache.phoenix.schema.IllegalDataException;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varbinary;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 /**
  * Convert string to bytes
  */
 @FunctionParseNode.BuiltInFunction(name = DecodeFunction.NAME, args = {
-	@FunctionParseNode.Argument(allowedTypes = {PDataType.VARCHAR}),
+	@FunctionParseNode.Argument(allowedTypes = { Varchar.class }),
 	@FunctionParseNode.Argument(enumeration = "EncodeFormat")})
 public class DecodeFunction extends ScalarFunction {
 
@@ -105,7 +107,7 @@ public class DecodeFunction extends ScalarFunction {
 
 	@Override
 	public PDataType getDataType() {
-		return PDataType.VARBINARY;
+		return Varbinary.INSTANCE;
 	}
 
 	@Override

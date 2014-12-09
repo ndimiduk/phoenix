@@ -23,6 +23,10 @@ import java.util.List;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 
 import org.apache.phoenix.query.QueryConstants;
+import org.apache.phoenix.schema.PDate;
+import org.apache.phoenix.schema.Decimal;
+import org.apache.phoenix.schema.PDouble;
+import org.apache.phoenix.schema.PLong;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -52,12 +56,12 @@ public class DateAddExpression extends AddExpression {
             long value;
             PDataType type = children.get(i).getDataType();
             SortOrder sortOrder = children.get(i).getSortOrder();
-            if (type == PDataType.DECIMAL) {
-                BigDecimal bd = (BigDecimal)PDataType.DECIMAL.toObject(ptr, sortOrder);
+            if (type == Decimal.INSTANCE) {
+                BigDecimal bd = (BigDecimal)Decimal.INSTANCE.toObject(ptr, sortOrder);
                 value = bd.multiply(BD_MILLIS_IN_DAY).longValue();
-            } else if (type.isCoercibleTo(PDataType.LONG)) {
+            } else if (type.isCoercibleTo(PLong.INSTANCE)) {
                 value = type.getCodec().decodeLong(ptr, sortOrder) * QueryConstants.MILLIS_IN_DAY;
-            } else if (type.isCoercibleTo(PDataType.DOUBLE)) {
+            } else if (type.isCoercibleTo(PDouble.INSTANCE)) {
                 value = (long)(type.getCodec().decodeDouble(ptr, sortOrder) * QueryConstants.MILLIS_IN_DAY);
             } else {
                 value = type.getCodec().decodeLong(ptr, sortOrder);
@@ -72,7 +76,7 @@ public class DateAddExpression extends AddExpression {
 
     @Override
     public final PDataType getDataType() {
-        return PDataType.DATE;
+        return PDate.INSTANCE;
     }
 
 }

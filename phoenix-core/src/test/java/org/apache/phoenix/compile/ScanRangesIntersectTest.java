@@ -34,6 +34,7 @@ import org.apache.phoenix.schema.PDatum;
 import org.apache.phoenix.schema.RowKeySchema;
 import org.apache.phoenix.schema.RowKeySchema.RowKeySchemaBuilder;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.util.ScanUtil;
 import org.junit.Test;
 
@@ -56,8 +57,8 @@ public class ScanRangesIntersectTest {
         Collections.sort(expectedKeys,KeyRange.COMPARATOR);
         Scan scan = new Scan();
         scan.setFilter(ranges.getSkipScanFilter());
-        byte[] startKey = lowerRange == null ? KeyRange.UNBOUND : PDataType.VARCHAR.toBytes(lowerRange);
-        byte[] stopKey = upperRange == null ? KeyRange.UNBOUND : PDataType.VARCHAR.toBytes(upperRange);
+        byte[] startKey = lowerRange == null ? KeyRange.UNBOUND : Varchar.INSTANCE.toBytes(lowerRange);
+        byte[] stopKey = upperRange == null ? KeyRange.UNBOUND : Varchar.INSTANCE.toBytes(upperRange);
         Scan newScan = ranges.intersectScan(scan, startKey, stopKey, 0, true);
         if (expectedPoints.length == 0) {
             assertNull(newScan);
@@ -71,7 +72,7 @@ public class ScanRangesIntersectTest {
     private static List<KeyRange> points(String... points) {
         List<KeyRange> keys = Lists.newArrayListWithExpectedSize(points.length);
         for (String point : points) {
-            keys.add(KeyRange.getKeyRange(PDataType.VARCHAR.toBytes(point)));
+            keys.add(KeyRange.getKeyRange(Varchar.INSTANCE.toBytes(point)));
         }
         return keys;
     }
@@ -85,7 +86,7 @@ public class ScanRangesIntersectTest {
             }
             @Override
             public PDataType getDataType() {
-                return PDataType.VARCHAR;
+                return Varchar.INSTANCE;
             }
             @Override
             public Integer getMaxLength() {

@@ -17,6 +17,7 @@
  */
 package org.apache.phoenix.expression.aggregator;
 
+import org.apache.phoenix.schema.PLong;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
 
@@ -35,6 +36,6 @@ public class LongSumAggregator extends NumberSumAggregator {
     
     @Override
     protected PDataType getInputDataType() {
-        return PDataType.LONG;
+        return PLong.INSTANCE;
     }
 }

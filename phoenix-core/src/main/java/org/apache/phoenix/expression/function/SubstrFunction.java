@@ -19,7 +19,6 @@ package org.apache.phoenix.expression.function;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
@@ -28,7 +27,9 @@ import org.apache.phoenix.expression.LiteralExpression;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PLong;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.StringUtil;
 
@@ -47,9 +48,9 @@ import org.apache.phoenix.util.StringUtil;
  * @since 0.1
  */
 @BuiltInFunction(name=SubstrFunction.NAME,  args={
-    @Argument(allowedTypes={PDataType.VARCHAR}),
-    @Argument(allowedTypes={PDataType.LONG}), // These are LONG because negative numbers end up as longs
-    @Argument(allowedTypes={PDataType.LONG},defaultValue="null")} )
+    @Argument(allowedTypes={Varchar.class}),
+    @Argument(allowedTypes={PLong.class}), // These are LONG because negative numbers end up as longs
+    @Argument(allowedTypes={PLong.class},defaultValue="null")} )
 public class SubstrFunction extends PrefixFunction {
     public static final String NAME = "SUBSTR";
     private boolean hasLengthExpression;
@@ -115,7 +116,7 @@ public class SubstrFunction extends PrefixFunction {
             return false;
         }
     
-        boolean isCharType = getStrExpression().getDataType() == PDataType.CHAR;
+        boolean isCharType = getStrExpression().getDataType() == org.apache.phoenix.schema.Char.INSTANCE;
         SortOrder sortOrder = getStrExpression().getSortOrder();
         int strlen = isCharType ? ptr.getLength() : StringUtil.calculateUTF8Length(ptr.get(), ptr.getOffset(), ptr.getLength(), sortOrder);
         
@@ -140,7 +141,7 @@ public class SubstrFunction extends PrefixFunction {
     public PDataType getDataType() {
         // If fixed width, then return child expression type.
         // If not fixed width, then we don't know how big this will be across the board
-        return isFixedWidth ? getStrExpression().getDataType() : PDataType.VARCHAR;
+        return isFixedWidth ? getStrExpression().getDataType() : Varchar.INSTANCE;
     }
 
     @Override

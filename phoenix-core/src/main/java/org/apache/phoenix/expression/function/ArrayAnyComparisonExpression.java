@@ -25,6 +25,7 @@ import org.apache.phoenix.expression.BaseCompoundExpression;
 import org.apache.phoenix.expression.ComparisonExpression;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.schema.PArrayDataType;
+import org.apache.phoenix.schema.PBoolean;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
 
@@ -73,6 +74,6 @@ public class ArrayAnyComparisonExpression extends BaseCompoundExpression {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.BOOLEAN;
+        return PBoolean.INSTANCE;
     }
 }

@@ -27,8 +27,9 @@ import org.apache.phoenix.parse.ParseNodeFactory;
 import org.apache.phoenix.parse.TraverseNoParseNodeVisitor;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PDatum;
+import org.apache.phoenix.schema.PInteger;
+import org.apache.phoenix.schema.PLong;
 import org.apache.phoenix.schema.SortOrder;
-
 
 public class LimitCompiler {
     private static final ParseNodeFactory NODE_FACTORY = new ParseNodeFactory();
@@ -40,7 +41,7 @@ public class LimitCompiler {
         }
         @Override
         public PDataType getDataType() {
-            return PDataType.INTEGER;
+            return PInteger.INSTANCE;
         }
         @Override
         public Integer getMaxLength() {

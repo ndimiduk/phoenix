@@ -26,6 +26,7 @@ import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.StringUtil;
@@ -39,7 +40,7 @@ import org.apache.phoenix.util.StringUtil;
  * @since 0.1
  */
 @BuiltInFunction(name=TrimFunction.NAME, args={
-    @Argument(allowedTypes={PDataType.VARCHAR})} )
+    @Argument(allowedTypes={ Varchar.class })} )
 public class TrimFunction extends ScalarFunction {
     public static final String NAME = "TRIM";
 
@@ -94,7 +95,7 @@ public class TrimFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 
     @Override

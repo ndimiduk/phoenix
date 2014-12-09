@@ -51,6 +51,7 @@ import org.apache.phoenix.jdbc.PhoenixParameterMetaData;
 import org.apache.phoenix.jdbc.PhoenixStatement;
 import org.apache.phoenix.parse.FilterableStatement;
 import org.apache.phoenix.parse.SelectStatement;
+import org.apache.phoenix.schema.Char;
 import org.apache.phoenix.schema.ColumnRef;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PDatum;
@@ -113,19 +114,19 @@ public class ParallelIteratorsSplitTest extends BaseConnectionlessQueryTest {
     }
 
     private static KeyRange getKeyRange(byte[] lowerRange, boolean lowerInclusive, byte[] upperRange, boolean upperInclusive) {
-        return PDataType.CHAR.getKeyRange(lowerRange, lowerInclusive, upperRange, upperInclusive);
+        return Char.INSTANCE.getKeyRange(lowerRange, lowerInclusive, upperRange, upperInclusive);
     }
 
     private static KeyRange getKeyRange(String lowerRange, boolean lowerInclusive, String upperRange, boolean upperInclusive) {
-        return PDataType.CHAR.getKeyRange(Bytes.toBytes(lowerRange), lowerInclusive, Bytes.toBytes(upperRange), upperInclusive);
+        return Char.INSTANCE.getKeyRange(Bytes.toBytes(lowerRange), lowerInclusive, Bytes.toBytes(upperRange), upperInclusive);
     }
     
     private static KeyRange getKeyRange(String lowerRange, boolean lowerInclusive, byte[] upperRange, boolean upperInclusive) {
-        return PDataType.CHAR.getKeyRange(Bytes.toBytes(lowerRange), lowerInclusive, upperRange, upperInclusive);
+        return Char.INSTANCE.getKeyRange(Bytes.toBytes(lowerRange), lowerInclusive, upperRange, upperInclusive);
     }
     
     private static KeyRange getKeyRange(byte[] lowerRange, boolean lowerInclusive, String upperRange, boolean upperInclusive) {
-        return PDataType.CHAR.getKeyRange(lowerRange, lowerInclusive, Bytes.toBytes(upperRange), upperInclusive);
+        return Char.INSTANCE.getKeyRange(lowerRange, lowerInclusive, Bytes.toBytes(upperRange), upperInclusive);
     }
     
     private static String nextKey(String s) {
@@ -260,7 +261,7 @@ public class ParallelIteratorsSplitTest extends BaseConnectionlessQueryTest {
                 }
                 @Override
                 public PDataType getDataType() {
-                    return PDataType.CHAR;
+                    return Char.INSTANCE;
                 }
                 @Override
                 public Integer getMaxLength() {

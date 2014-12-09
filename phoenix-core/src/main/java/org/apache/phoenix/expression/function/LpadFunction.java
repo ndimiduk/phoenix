@@ -22,8 +22,10 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
+import org.apache.phoenix.schema.PInteger;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.StringUtil;
 
@@ -33,9 +35,9 @@ import org.apache.phoenix.util.StringUtil;
  * Fills up the input to length (number of characters) by prepending characters in fill (space by default). If the input
  * is already longer than length then it is truncated on the right.
  */
-@BuiltInFunction(name = LpadFunction.NAME, args = { @Argument(allowedTypes = { PDataType.VARCHAR }),
-    @Argument(allowedTypes = { PDataType.INTEGER }),
-    @Argument(allowedTypes = { PDataType.VARCHAR }, defaultValue = "' '") })
+@BuiltInFunction(name = LpadFunction.NAME, args = { @Argument(allowedTypes = { Varchar.class }),
+    @Argument(allowedTypes = { PInteger.class }),
+    @Argument(allowedTypes = { Varchar.class }, defaultValue = "' '") })
 public class LpadFunction extends ScalarFunction {
     public static final String NAME = "LPAD";
 
@@ -97,8 +99,8 @@ public class LpadFunction extends ScalarFunction {
             return false;
         }
 
-        boolean isStrCharType = getStrExpr().getDataType() == PDataType.CHAR;
-        boolean isFillCharType = getFillExpr().getDataType() == PDataType.CHAR;
+        boolean isStrCharType = getStrExpr().getDataType() == org.apache.phoenix.schema.Char.INSTANCE;
+        boolean isFillCharType = getFillExpr().getDataType() == org.apache.phoenix.schema.Char.INSTANCE;
         SortOrder strSortOrder = getStrExpr().getSortOrder();
         SortOrder fillSortOrder = getFillExpr().getSortOrder();
         int inputStrLen = getUTF8Length(ptr, strSortOrder, isStrCharType);
@@ -165,7 +167,7 @@ public class LpadFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 
     @Override

@@ -52,7 +52,7 @@ import org.apache.phoenix.schema.RowKeySchema;
 import org.apache.phoenix.schema.ValueSchema.Field;
 
 import com.google.common.collect.Lists;
-
+import org.apache.phoenix.schema.Varbinary;
 
 /**
  * 
@@ -437,7 +437,7 @@ public class ScanUtil {
     public static ScanRanges newScanRanges(List<Mutation> mutations) throws SQLException {
         List<KeyRange> keys = Lists.newArrayListWithExpectedSize(mutations.size());
         for (Mutation m : mutations) {
-            keys.add(PDataType.VARBINARY.getKeyRange(m.getRow()));
+            keys.add(Varbinary.INSTANCE.getKeyRange(m.getRow()));
         }
         ScanRanges keyRanges = ScanRanges.create(SchemaUtil.VAR_BINARY_SCHEMA, Collections.singletonList(keys), ScanUtil.SINGLE_COLUMN_SLOT_SPAN);
         return keyRanges;

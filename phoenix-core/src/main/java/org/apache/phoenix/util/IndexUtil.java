@@ -67,6 +67,7 @@ import org.apache.phoenix.query.QueryConstants;
 import org.apache.phoenix.schema.ColumnFamilyNotFoundException;
 import org.apache.phoenix.schema.ColumnNotFoundException;
 import org.apache.phoenix.schema.ColumnRef;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.KeyValueSchema;
 import org.apache.phoenix.schema.PColumn;
 import org.apache.phoenix.schema.PColumnFamily;
@@ -74,6 +75,7 @@ import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PTable;
 import org.apache.phoenix.schema.TableNotFoundException;
 import org.apache.phoenix.schema.TableRef;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.ResultTuple;
 import org.apache.phoenix.schema.tuple.Tuple;
 
@@ -106,12 +108,12 @@ public class IndexUtil {
             return dataType;
         }
         // for fixed length numeric types and boolean
-        if (dataType.isCastableTo(PDataType.DECIMAL)) {
-            return PDataType.DECIMAL;
+        if (dataType.isCastableTo(Decimal.INSTANCE)) {
+            return Decimal.INSTANCE;
         }
         // for CHAR
-        if (dataType.isCoercibleTo(PDataType.VARCHAR)) {
-            return PDataType.VARCHAR;
+        if (dataType.isCoercibleTo(Varchar.INSTANCE)) {
+            return Varchar.INSTANCE;
         }
         throw new IllegalArgumentException("Unsupported non nullable index type " + dataType);
     }

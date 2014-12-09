@@ -26,6 +26,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
+import org.apache.phoenix.schema.Binary;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
 
@@ -66,7 +67,7 @@ public class MD5Function extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.BINARY;
+        return Binary.INSTANCE;
     }
 
     @Override

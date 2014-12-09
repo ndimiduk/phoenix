@@ -24,8 +24,13 @@ import java.util.List;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.expression.function.RoundDecimalExpression;
 import org.apache.phoenix.expression.function.RoundTimestampExpression;
+import org.apache.phoenix.schema.PDate;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PLong;
+import org.apache.phoenix.schema.PTimestamp;
 import org.apache.phoenix.schema.TypeMismatchException;
+import org.apache.phoenix.schema.UnsignedTimestamp;
 import org.apache.phoenix.util.SchemaUtil;
 
 /**
@@ -87,9 +92,11 @@ public class CastParseNode extends UnaryParseNode {
 //            return firstChildExpr;
 //        } else if(fromDataType.isCoercibleTo(PDataType.LONG) && (targetDataType == PDataType.DATE || targetDataType == PDataType.UNSIGNED_DATE)) {
 //            return firstChildExpr;
-	    } else if((fromDataType == PDataType.DECIMAL || fromDataType == PDataType.TIMESTAMP || fromDataType == PDataType.UNSIGNED_TIMESTAMP) && targetDataType.isCoercibleTo(PDataType.LONG)) {
+	    } else if((fromDataType == Decimal.INSTANCE || fromDataType == PTimestamp.INSTANCE || fromDataType == UnsignedTimestamp.INSTANCE) && targetDataType.isCoercibleTo(
+          PLong.INSTANCE)) {
 	        return RoundDecimalExpression.create(expressions);
-	    } else if((fromDataType == PDataType.DECIMAL || fromDataType == PDataType.TIMESTAMP || fromDataType == PDataType.UNSIGNED_TIMESTAMP) && targetDataType.isCoercibleTo(PDataType.DATE)) {
+	    } else if((fromDataType == Decimal.INSTANCE || fromDataType == PTimestamp.INSTANCE || fromDataType == UnsignedTimestamp.INSTANCE) && targetDataType.isCoercibleTo(
+          PDate.INSTANCE)) {
 	        return RoundTimestampExpression.create(expressions);
 	    } else if(fromDataType.isCastableTo(targetDataType)) {
 	        return firstChildExpr;

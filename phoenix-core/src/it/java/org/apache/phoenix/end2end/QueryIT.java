@@ -58,7 +58,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.phoenix.exception.SQLExceptionCode;
 import org.apache.phoenix.jdbc.PhoenixConnection;
-import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PTimestamp;
 import org.apache.phoenix.schema.SequenceNotFoundException;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.MetaDataUtil;
@@ -403,7 +403,7 @@ public class QueryIT extends BaseQueryIT {
         stmt.setString(1, tenantId);
         stmt.setString(2, ROW4);
         Timestamp tsValue1 = new Timestamp(5000);
-        byte[] ts1 = PDataType.TIMESTAMP.toBytes(tsValue1);
+        byte[] ts1 = PTimestamp.INSTANCE.toBytes(tsValue1);
         stmt.setTimestamp(3, tsValue1);
         stmt.execute();
         
@@ -425,7 +425,7 @@ public class QueryIT extends BaseQueryIT {
         stmt.setString(2, ROW5);
         Timestamp tsValue2 = new Timestamp(5000);
         tsValue2.setNanos(200);
-        byte[] ts2 = PDataType.TIMESTAMP.toBytes(tsValue2);
+        byte[] ts2 = PTimestamp.INSTANCE.toBytes(tsValue2);
         stmt.setTimestamp(3, tsValue2);
         stmt.setTime(4, new Time(tsValue2.getTime()));
         stmt.execute();

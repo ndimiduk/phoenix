@@ -30,7 +30,9 @@ import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.*;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
+import org.apache.phoenix.schema.PDate;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.DateUtil;
 
@@ -46,9 +48,9 @@ import org.apache.phoenix.util.DateUtil;
  * @since 0.1
  */
 @BuiltInFunction(name=ToDateFunction.NAME, nodeClass=ToDateParseNode.class,
-        args={@Argument(allowedTypes={PDataType.VARCHAR}),
-                @Argument(allowedTypes={PDataType.VARCHAR},isConstant=true,defaultValue="null"),
-                @Argument(allowedTypes={PDataType.VARCHAR}, isConstant=true, defaultValue = "null") } )
+        args={@Argument(allowedTypes={Varchar.class}),
+                @Argument(allowedTypes={Varchar.class},isConstant=true,defaultValue="null"),
+                @Argument(allowedTypes={Varchar.class}, isConstant=true, defaultValue = "null") } )
 public class ToDateFunction extends ScalarFunction {
     public static final String NAME = "TO_DATE";
     private Format dateParser;
@@ -103,7 +105,7 @@ public class ToDateFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.DATE;
+        return PDate.INSTANCE;
     }
 
     @Override

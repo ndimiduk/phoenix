@@ -29,6 +29,7 @@ import org.apache.phoenix.expression.LiteralExpression;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 
@@ -39,18 +40,18 @@ import org.apache.phoenix.schema.tuple.Tuple;
  * REGEXP_REPLACE(<source_char>,<pattern>,<replace_string>)
  * source_char is the string in which we want to perform string replacement. pattern is a
  * Java compatible regular expression string, and we replace all the matching part with 
- * replace_string. The first 2 arguments are required and are {@link org.apache.phoenix.schema.PDataType#VARCHAR},
+ * replace_string. The first 2 arguments are required and are {@link org.apache.phoenix.schema.Varchar},
  * the replace_string is default to empty string.
  * 
- * The function returns a {@link org.apache.phoenix.schema.PDataType#VARCHAR}
+ * The function returns a {@link org.apache.phoenix.schema.Varchar}
  * 
  * 
  * @since 0.1
  */
 @BuiltInFunction(name=RegexpReplaceFunction.NAME, args= {
-    @Argument(allowedTypes={PDataType.VARCHAR}),
-    @Argument(allowedTypes={PDataType.VARCHAR}),
-    @Argument(allowedTypes={PDataType.VARCHAR},defaultValue="null")} )
+    @Argument(allowedTypes={Varchar.class}),
+    @Argument(allowedTypes={Varchar.class}),
+    @Argument(allowedTypes={Varchar.class},defaultValue="null")} )
 public class RegexpReplaceFunction extends ScalarFunction {
     public static final String NAME = "REGEXP_REPLACE";
 
@@ -83,7 +84,7 @@ public class RegexpReplaceFunction extends ScalarFunction {
         if (!sourceStrExpression.evaluate(tuple, ptr)) {
             return false;
         }
-        String sourceStr = (String)PDataType.VARCHAR.toObject(ptr, sourceStrExpression.getSortOrder());
+        String sourceStr = (String)Varchar.INSTANCE.toObject(ptr, sourceStrExpression.getSortOrder());
         if (sourceStr == null) {
             return false;
         }
@@ -93,12 +94,12 @@ public class RegexpReplaceFunction extends ScalarFunction {
             if (!replaceStrExpression.evaluate(tuple, ptr)) {
                 return false;
             }
-            replaceStr = (String)PDataType.VARCHAR.toObject(ptr, replaceStrExpression.getSortOrder());
+            replaceStr = (String) Varchar.INSTANCE.toObject(ptr, replaceStrExpression.getSortOrder());
         } else {
             replaceStr = "";
         }
         String replacedStr = pattern.matcher(sourceStr).replaceAll(replaceStr);
-        ptr.set(PDataType.VARCHAR.toBytes(replacedStr));
+        ptr.set(Varchar.INSTANCE.toBytes(replacedStr));
         return true;
     }
 
@@ -112,7 +113,7 @@ public class RegexpReplaceFunction extends ScalarFunction {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.VARCHAR;
+        return Varchar.INSTANCE;
     }
 
     @Override

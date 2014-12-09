@@ -25,7 +25,9 @@ import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.expression.function.FloorDateExpression;
 import org.apache.phoenix.expression.function.FloorDecimalExpression;
 import org.apache.phoenix.expression.function.FloorFunction;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PTimestamp;
 import org.apache.phoenix.schema.TypeMismatchException;
 
 /**
@@ -54,9 +56,9 @@ public class FloorParseNode extends FunctionParseNode {
         
         //FLOOR on timestamp doesn't really care about the nanos part i.e. it just sets it to zero. 
         //Which is exactly what FloorDateExpression does too. 
-        if(firstChildDataType.isCoercibleTo(PDataType.TIMESTAMP)) {
+        if(firstChildDataType.isCoercibleTo(PTimestamp.INSTANCE)) {
             return FloorDateExpression.create(children);
-        } else if(firstChildDataType.isCoercibleTo(PDataType.DECIMAL)) {
+        } else if(firstChildDataType.isCoercibleTo(Decimal.INSTANCE)) {
             return FloorDecimalExpression.create(children);
         } else {
             throw TypeMismatchException.newException(firstChildDataType, "1");

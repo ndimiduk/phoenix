@@ -26,10 +26,11 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 @FunctionParseNode.BuiltInFunction(name=LowerFunction.NAME,  args={
-        @FunctionParseNode.Argument(allowedTypes={PDataType.VARCHAR})} )
+        @FunctionParseNode.Argument(allowedTypes={Varchar.class})} )
 public class LowerFunction extends ScalarFunction {
     public static final String NAME = "LOWER";
 
@@ -46,13 +47,13 @@ public class LowerFunction extends ScalarFunction {
             return false;
         }
 
-        String sourceStr = (String)PDataType.VARCHAR.toObject(ptr, getStrExpression().getSortOrder());
+        String sourceStr = (String) Varchar.INSTANCE.toObject(ptr, getStrExpression().getSortOrder());
 
         if (sourceStr == null) {
             return true;
         }
 
-        ptr.set(PDataType.VARCHAR.toBytes(sourceStr.toLowerCase()));
+        ptr.set(Varchar.INSTANCE.toBytes(sourceStr.toLowerCase()));
         return true;
     }
 

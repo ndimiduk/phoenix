@@ -28,6 +28,6 @@ package org.apache.phoenix.schema;
 public abstract class PLongColumn extends PBaseColumn {
     @Override
     public final PDataType getDataType() {
-        return PDataType.LONG;
+        return PLong.INSTANCE;
     }
 }

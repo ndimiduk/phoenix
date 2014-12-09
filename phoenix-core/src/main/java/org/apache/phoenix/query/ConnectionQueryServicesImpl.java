@@ -110,6 +110,7 @@ import org.apache.phoenix.protobuf.ProtobufUtil;
 import org.apache.phoenix.schema.EmptySequenceCacheException;
 import org.apache.phoenix.schema.MetaDataSplitPolicy;
 import org.apache.phoenix.schema.NewerTableAlreadyExistsException;
+import org.apache.phoenix.schema.PBoolean;
 import org.apache.phoenix.schema.PColumn;
 import org.apache.phoenix.schema.PColumnFamily;
 import org.apache.phoenix.schema.PDataType;
@@ -641,7 +642,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
             }
             
             if (descriptor.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES) != null
-                    && Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(descriptor
+                    && Boolean.TRUE.equals(PBoolean.INSTANCE.toObject(descriptor
                             .getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
                 if (!descriptor.hasCoprocessor(IndexHalfStoreFileReaderGenerator.class.getName())) {
                     descriptor.addCoprocessor(IndexHalfStoreFileReaderGenerator.class.getName(),
@@ -857,7 +858,6 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
      * @param tableName
      * @param splits
      * @param modifyExistingMetaData TODO
-     * @param familyNames
      * @return true if table was created and false if it already exists
      * @throws SQLException
      */
@@ -886,7 +886,8 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
             HTableDescriptor newDesc = generateTableDescriptor(tableName, existingDesc, tableType , props, families, splits);
             
             if (!tableExist) {
-                if (newDesc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES) != null && Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(newDesc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
+                if (newDesc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES) != null && Boolean.TRUE.equals(
+                    PBoolean.INSTANCE.toObject(newDesc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
                     newDesc.setValue(HTableDescriptor.SPLIT_POLICY, IndexRegionSplitPolicy.class.getName());
                 }
                 // Remove the splitPolicy attribute to prevent HBASE-12570
@@ -1113,7 +1114,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
         tableProps.put(MetaDataUtil.IS_VIEW_INDEX_TABLE_PROP_NAME, TRUE_BYTES_AS_STRING);
         HTableDescriptor desc = ensureTableCreated(physicalIndexName, PTableType.TABLE, tableProps, families, splits, false);
         if (desc != null) {
-            if (!Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(desc.getValue(MetaDataUtil.IS_VIEW_INDEX_TABLE_PROP_BYTES)))) {
+            if (!Boolean.TRUE.equals(PBoolean.INSTANCE.toObject(desc.getValue(MetaDataUtil.IS_VIEW_INDEX_TABLE_PROP_BYTES)))) {
                 String fullTableName = Bytes.toString(physicalIndexName);
                 throw new TableAlreadyExistsException(
                         "Unable to create shared physical table for indexes on views.",
@@ -1152,7 +1153,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
         tableProps.put(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_NAME, TRUE_BYTES_AS_STRING);
         HTableDescriptor desc = ensureTableCreated(physicalTableName, PTableType.TABLE, tableProps, families, splits, true);
         if (desc != null) {
-            if (!Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(desc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
+            if (!Boolean.TRUE.equals(PBoolean.INSTANCE.toObject(desc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
                 String fullTableName = Bytes.toString(physicalTableName);
                 throw new TableAlreadyExistsException(
                         "Unable to create shared physical table for local indexes.",
@@ -1171,7 +1172,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
             admin = new HBaseAdmin(config);
             try {
                 desc = admin.getTableDescriptor(physicalIndexName);
-                if (Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(desc.getValue(MetaDataUtil.IS_VIEW_INDEX_TABLE_PROP_BYTES)))) {
+                if (Boolean.TRUE.equals(PBoolean.INSTANCE.toObject(desc.getValue(MetaDataUtil.IS_VIEW_INDEX_TABLE_PROP_BYTES)))) {
                     this.tableStatsCache.invalidate(new ImmutableBytesPtr(physicalIndexName));
                     final ReadOnlyProps props = this.getProps();
                     final boolean dropMetadata = props.getBoolean(DROP_METADATA_ATTRIB, DEFAULT_DROP_METADATA);
@@ -1206,7 +1207,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
             admin = new HBaseAdmin(config);
             try {
                 desc = admin.getTableDescriptor(physicalIndexName);
-                if (Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(desc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
+                if (Boolean.TRUE.equals(PBoolean.INSTANCE.toObject(desc.getValue(MetaDataUtil.IS_LOCAL_INDEX_TABLE_PROP_BYTES)))) {
                     this.tableStatsCache.invalidate(new ImmutableBytesPtr(physicalIndexName));
                     final ReadOnlyProps props = this.getProps();
                     final boolean dropMetadata = props.getBoolean(DROP_METADATA_ATTRIB, DEFAULT_DROP_METADATA);
@@ -1545,7 +1546,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
         if (result.getMutationCode() == MutationCode.COLUMN_NOT_FOUND) { // Success
             // Flush the table if transitioning DISABLE_WAL from TRUE to FALSE
             if (  MetaDataUtil.getMutationValue(m,PhoenixDatabaseMetaData.DISABLE_WAL_BYTES, kvBuilder, ptr)
-               && Boolean.FALSE.equals(PDataType.BOOLEAN.toObject(ptr))) {
+               && Boolean.FALSE.equals(PBoolean.INSTANCE.toObject(ptr))) {
                 flushTable(table.getPhysicalName().getBytes());
             }
             
@@ -1553,7 +1554,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
                 // If we're changing MULTI_TENANT to true or false, create or drop the view index table
                 if (MetaDataUtil.getMutationValue(m, PhoenixDatabaseMetaData.MULTI_TENANT_BYTES, kvBuilder, ptr)){
                     long timestamp = MetaDataUtil.getClientTimeStamp(m);
-                    if (Boolean.TRUE.equals(PDataType.BOOLEAN.toObject(ptr.get(), ptr.getOffset(), ptr.getLength()))) {
+                    if (Boolean.TRUE.equals(PBoolean.INSTANCE.toObject(ptr.get(), ptr.getOffset(), ptr.getLength()))) {
                         this.ensureViewIndexTableCreated(table, timestamp);
                     } else {
                         this.ensureViewIndexTableDropped(table.getPhysicalName().getBytes(), timestamp);
@@ -1923,9 +1924,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
 
     /**
      * Gets the current sequence value
-     * @param tenantId
-     * @param sequence
-     * @throws SQLException if cached sequence cannot be found 
+     * @throws SQLException if cached sequence cannot be found
      */
     @Override
     public long currentSequenceValue(SequenceKey sequenceKey, long timestamp) throws SQLException {
@@ -1959,9 +1958,7 @@ public class ConnectionQueryServicesImpl extends DelegateQueryServices implement
      * Increment any of the set of sequences that need more values. These are the sequences
      * that are asking for the next value within a given statement. The returned sequences
      * are the ones that were not found because they were deleted by another client. 
-     * @param tenantId
      * @param sequenceKeys sorted list of sequence kyes
-     * @param batchSize
      * @param timestamp
      * @throws SQLException if any of the sequences cannot be found
      * 

@@ -25,7 +25,9 @@ import org.apache.phoenix.exception.UndecodableByteException;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode.Argument;
 import org.apache.phoenix.parse.FunctionParseNode.BuiltInFunction;
+import org.apache.phoenix.schema.PInteger;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.StringUtil;
@@ -41,7 +43,7 @@ import org.apache.phoenix.util.StringUtil;
  * @since 0.1
  */
 @BuiltInFunction(name=LengthFunction.NAME, args={
-    @Argument(allowedTypes={PDataType.VARCHAR})} )
+    @Argument(allowedTypes={ Varchar.class })} )
 public class LengthFunction extends ScalarFunction {
     public static final String NAME = "LENGTH";
 
@@ -66,7 +68,7 @@ public class LengthFunction extends ScalarFunction {
             return true;
         }
         int len;
-        if (child.getDataType() == PDataType.CHAR) {
+        if (child.getDataType() == org.apache.phoenix.schema.Char.INSTANCE) {
             // Only single-byte characters allowed in CHAR
             len = ptr.getLength();
         } else {
@@ -76,13 +78,13 @@ public class LengthFunction extends ScalarFunction {
                 return false;
             }
         }
-        ptr.set(PDataType.INTEGER.toBytes(len));
+        ptr.set(PInteger.INSTANCE.toBytes(len));
         return true;
     }
 
     @Override
     public PDataType getDataType() {
-        return PDataType.INTEGER;
+        return PInteger.INSTANCE;
     }
 
     @Override

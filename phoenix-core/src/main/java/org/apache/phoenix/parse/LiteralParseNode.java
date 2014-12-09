@@ -22,8 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.phoenix.schema.PDataType;
-
-
+import org.apache.phoenix.schema.Varchar;
 
 /**
  * 
@@ -79,6 +78,6 @@ public class LiteralParseNode extends TerminalParseNode {
     
     @Override
     public String toString() {
-        return type == PDataType.VARCHAR ? ("'" + value.toString() + "'") : value == null ? "null" : value.toString();
+        return type == Varchar.INSTANCE ? ("'" + value.toString() + "'") : value == null ? "null" : value.toString();
     }
 }

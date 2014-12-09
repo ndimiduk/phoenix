@@ -33,13 +33,14 @@ import org.apache.phoenix.expression.function.FloorDateExpression;
 import org.apache.phoenix.expression.function.FloorDecimalExpression;
 import org.apache.phoenix.expression.function.TimeUnit;
 import org.apache.phoenix.expression.visitor.ExpressionVisitor;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PTimestamp;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.TypeMismatchException;
 
 import com.google.common.collect.Lists;
-
-
+import org.apache.phoenix.schema.UnsignedTimestamp;
 
 /**
  * 
@@ -71,9 +72,9 @@ public abstract class BaseExpression implements Expression {
                 Expression e = rhs;
                 PDataType rhsType = rhs.getDataType();
                 PDataType lhsType = lhs.getDataType();
-                if (rhsType == PDataType.DECIMAL && lhsType != PDataType.DECIMAL) {
+                if (rhsType == Decimal.INSTANCE && lhsType != Decimal.INSTANCE) {
                     e = FloorDecimalExpression.create(rhs);
-                } else if ((rhsType == PDataType.TIMESTAMP || rhsType == PDataType.UNSIGNED_TIMESTAMP)  && (lhsType != PDataType.TIMESTAMP && lhsType != PDataType.UNSIGNED_TIMESTAMP)) {
+                } else if ((rhsType == PTimestamp.INSTANCE || rhsType == UnsignedTimestamp.INSTANCE)  && (lhsType != PTimestamp.INSTANCE && lhsType != UnsignedTimestamp.INSTANCE)) {
                     e = FloorDateExpression.create(rhs, TimeUnit.MILLISECOND);
                 }
                 e = CoerceExpression.create(e, lhsType, lhs.getSortOrder(), lhs.getMaxLength());
@@ -90,9 +91,9 @@ public abstract class BaseExpression implements Expression {
                 Expression e = rhs;
                 PDataType rhsType = rhs.getDataType();
                 PDataType lhsType = lhs.getDataType();
-                if (rhsType == PDataType.DECIMAL && lhsType != PDataType.DECIMAL) {
+                if (rhsType == Decimal.INSTANCE && lhsType != Decimal.INSTANCE) {
                     e = CeilDecimalExpression.create(rhs);
-                } else if ((rhsType == PDataType.TIMESTAMP || rhsType == PDataType.UNSIGNED_TIMESTAMP)  && (lhsType != PDataType.TIMESTAMP && lhsType != PDataType.UNSIGNED_TIMESTAMP)) {
+                } else if ((rhsType == PTimestamp.INSTANCE || rhsType == UnsignedTimestamp.INSTANCE)  && (lhsType != PTimestamp.INSTANCE && lhsType != UnsignedTimestamp.INSTANCE)) {
                     e = CeilTimestampExpression.create(rhs);
                 }
                 e = CoerceExpression.create(e, lhsType, lhs.getSortOrder(), lhs.getMaxLength());

@@ -23,12 +23,16 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import org.apache.phoenix.expression.CoerceExpression;
 import org.apache.phoenix.expression.Expression;
+import org.apache.phoenix.schema.PDate;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.PTimestamp;
+import org.apache.phoenix.schema.UnsignedDate;
+import org.apache.phoenix.schema.UnsignedTimestamp;
 
 /**
  * 
  * Class encapsulating the FLOOR operation on 
- * a column/literal of type {@link org.apache.phoenix.schema.PDataType#DATE}.
+ * a column/literal of type {@link org.apache.phoenix.schema.PDate}.
  *
  * 
  * @since 3.0.0
@@ -44,10 +48,10 @@ public class FloorDateExpression extends RoundDateExpression {
     public static Expression create(List<Expression> children) throws SQLException {
         Expression firstChild = children.get(0);
         PDataType firstChildDataType = firstChild.getDataType();
-        if (firstChildDataType == PDataType.TIMESTAMP || firstChildDataType == PDataType.UNSIGNED_TIMESTAMP){
+        if (firstChildDataType == PTimestamp.INSTANCE || firstChildDataType == UnsignedTimestamp.INSTANCE){
             // Coerce TIMESTAMP to DATE, as the nanos has no affect
             List<Expression> newChildren = Lists.newArrayListWithExpectedSize(children.size());
-            newChildren.add(CoerceExpression.create(firstChild, firstChildDataType == PDataType.TIMESTAMP ? PDataType.DATE : PDataType.UNSIGNED_DATE));
+            newChildren.add(CoerceExpression.create(firstChild, firstChildDataType == PTimestamp.INSTANCE ? PDate.INSTANCE : UnsignedDate.INSTANCE));
             newChildren.addAll(children.subList(1, children.size()));
             children = newChildren;
         }

@@ -19,6 +19,7 @@ package org.apache.phoenix.expression.aggregator;
 
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 
+import org.apache.phoenix.schema.PDouble;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.tuple.Tuple;
@@ -33,12 +34,12 @@ public class DoubleSumAggregator extends BaseAggregator {
         super(sortOrder);
         if (ptr != null) {
             initBuffer();
-            sum = PDataType.DOUBLE.getCodec().decodeDouble(ptr, sortOrder);
+            sum = PDouble.INSTANCE.getCodec().decodeDouble(ptr, sortOrder);
         }
     }
     
     protected PDataType getInputDataType() {
-        return PDataType.DOUBLE;
+        return PDouble.INSTANCE;
     }
     
     private void initBuffer() {
@@ -69,7 +70,7 @@ public class DoubleSumAggregator extends BaseAggregator {
 
     @Override
     public PDataType getDataType() {
-        return PDataType.DOUBLE;
+        return PDouble.INSTANCE;
     }
     
     @Override

@@ -26,10 +26,11 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.parse.FunctionParseNode;
 import org.apache.phoenix.schema.PDataType;
+import org.apache.phoenix.schema.Varchar;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 @FunctionParseNode.BuiltInFunction(name=UpperFunction.NAME,  args={
-        @FunctionParseNode.Argument(allowedTypes={PDataType.VARCHAR})} )
+        @FunctionParseNode.Argument(allowedTypes={Varchar.class})} )
 public class UpperFunction extends ScalarFunction {
     public static final String NAME = "UPPER";
 
@@ -46,12 +47,12 @@ public class UpperFunction extends ScalarFunction {
             return false;
         }
 
-        String sourceStr = (String)PDataType.VARCHAR.toObject(ptr, getStrExpression().getSortOrder());
+        String sourceStr = (String)Varchar.INSTANCE.toObject(ptr, getStrExpression().getSortOrder());
         if (sourceStr == null) {
             return true;
         }
 
-        ptr.set(PDataType.VARCHAR.toBytes(sourceStr.toUpperCase()));
+        ptr.set(Varchar.INSTANCE.toBytes(sourceStr.toUpperCase()));
         return true;
     }
 

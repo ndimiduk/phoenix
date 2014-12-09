@@ -38,11 +38,12 @@ import org.apache.phoenix.parse.ParseNode;
 import org.apache.phoenix.parse.SelectStatement;
 import org.apache.phoenix.schema.AmbiguousColumnException;
 import org.apache.phoenix.schema.ColumnNotFoundException;
+import org.apache.phoenix.schema.Decimal;
 import org.apache.phoenix.schema.PDataType;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
+import org.apache.phoenix.schema.Varchar;
 
 /**
  * 
@@ -268,11 +269,11 @@ public class GroupByCompiler {
         if (!expression.isNullable() || !type.isFixedWidth()) {
             return type;
         }
-        if (type.isCastableTo(PDataType.DECIMAL)) {
-            return PDataType.DECIMAL;
+        if (type.isCastableTo(Decimal.INSTANCE)) {
+            return Decimal.INSTANCE;
         }
-        if (type.isCastableTo(PDataType.VARCHAR)) {
-            return PDataType.VARCHAR;
+        if (type.isCastableTo(Varchar.INSTANCE)) {
+            return Varchar.INSTANCE;
         }
         // This might happen if someone tries to group by an array
         throw new IllegalStateException("Multiple occurrences of type " + type + " may not occur in a GROUP BY clause");

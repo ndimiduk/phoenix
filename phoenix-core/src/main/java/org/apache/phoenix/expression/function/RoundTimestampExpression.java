@@ -27,15 +27,19 @@ import com.google.common.collect.Lists;
 import org.apache.phoenix.expression.CoerceExpression;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.expression.LiteralExpression;
+import org.apache.phoenix.schema.PDate;
+import org.apache.phoenix.schema.PTimestamp;
 import org.apache.phoenix.schema.SortOrder;
 import org.apache.phoenix.schema.PDataType;
 import org.apache.phoenix.schema.PDataType.PDataCodec;
+import org.apache.phoenix.schema.UnsignedDate;
+import org.apache.phoenix.schema.UnsignedTimestamp;
 import org.apache.phoenix.schema.tuple.Tuple;
 
 /**
  * 
  * Class encapsulating the process for rounding off a column/literal of 
- * type {@link org.apache.phoenix.schema.PDataType#TIMESTAMP}
+ * type {@link org.apache.phoenix.schema.PTimestamp}
  * This class only supports rounding off the milliseconds that is for
  * {@link TimeUnit#MILLISECOND}. If you want more options of rounding like 
  * using {@link TimeUnit#HOUR} use {@link RoundDateExpression}
@@ -70,17 +74,18 @@ public class RoundTimestampExpression extends RoundDateExpression {
         }
         // Coerce TIMESTAMP to DATE, as the nanos has no affect
         List<Expression> newChildren = Lists.newArrayListWithExpectedSize(children.size());
-        newChildren.add(CoerceExpression.create(firstChild, firstChildDataType == PDataType.TIMESTAMP ? PDataType.DATE : PDataType.UNSIGNED_DATE));
+        newChildren.add(CoerceExpression.create(firstChild, firstChildDataType == PTimestamp.INSTANCE ?
+            PDate.INSTANCE : UnsignedDate.INSTANCE));
         newChildren.addAll(children.subList(1, children.size()));
         return RoundDateExpression.create(newChildren);
     }
     
     @Override
     protected PDataCodec getKeyRangeCodec(PDataType columnDataType) {
-        return columnDataType == PDataType.TIMESTAMP 
-                ? PDataType.DATE.getCodec() 
-                : columnDataType == PDataType.UNSIGNED_TIMESTAMP 
-                    ? PDataType.UNSIGNED_DATE.getCodec() 
+        return columnDataType == PTimestamp.INSTANCE
+                ? PDate.INSTANCE.getCodec()
+                : columnDataType == UnsignedTimestamp.INSTANCE
+                    ? UnsignedDate.INSTANCE.getCodec()
                     : super.getKeyRangeCodec(columnDataType);
     }
     

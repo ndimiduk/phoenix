@@ -61,6 +61,7 @@ import org.apache.phoenix.schema.PTable;
 import org.apache.phoenix.schema.RowKeySchema;
 import org.apache.phoenix.schema.SaltingUtil;
 import org.apache.phoenix.schema.SortOrder;
+import org.apache.phoenix.schema.Varbinary;
 import org.apache.phoenix.schema.tuple.Tuple;
 import org.apache.phoenix.util.ByteUtil;
 import org.apache.phoenix.util.MetaDataUtil;
@@ -84,7 +85,7 @@ import com.google.common.collect.Sets;
  */
 public class WhereOptimizer {
     private static final List<KeyRange> EVERYTHING_RANGES = Collections.<KeyRange>singletonList(KeyRange.EVERYTHING_RANGE);
-    private static final List<KeyRange> SALT_PLACEHOLDER = Collections.singletonList(PDataType.CHAR.getKeyRange(QueryConstants.SEPARATOR_BYTE_ARRAY));
+    private static final List<KeyRange> SALT_PLACEHOLDER = Collections.singletonList(org.apache.phoenix.schema.Char.INSTANCE.getKeyRange(QueryConstants.SEPARATOR_BYTE_ARRAY));
     
     private WhereOptimizer() {
     }
@@ -935,7 +936,7 @@ public class WhereOptimizer {
             KeySlots childSlots = childParts.get(0);
             KeySlot childSlot = childSlots.iterator().next();
             final String startsWith = node.getLiteralPrefix();
-            byte[] key = PDataType.CHAR.toBytes(startsWith, node.getChildren().get(0).getSortOrder());
+            byte[] key = org.apache.phoenix.schema.Char.INSTANCE.toBytes(startsWith, node.getChildren().get(0).getSortOrder());
             // If the expression is an equality expression against a fixed length column
             // and the key length doesn't match the column length, the expression can
             // never be true.
@@ -1375,7 +1376,7 @@ public class WhereOptimizer {
                     return null; 
                 }
                 byte[] key = ByteUtil.copyKeyBytesIfNecessary(ptr);
-                return ByteUtil.getKeyRange(key, op, PDataType.VARBINARY);
+                return ByteUtil.getKeyRange(key, op, Varbinary.INSTANCE);
             }
 
         }
