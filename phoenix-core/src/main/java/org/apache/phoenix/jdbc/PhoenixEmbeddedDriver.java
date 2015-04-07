@@ -105,6 +105,12 @@ public abstract class PhoenixEmbeddedDriver implements Driver, org.apache.phoeni
                 if (url.length() == protoLength) {
                     return true;
                 }
+                // Explicitly ignore connections of "jdbc:phoenix:remote"; leave them for
+                // the thin client
+                if (url.startsWith(PhoenixRuntime.JDBC_PROTOCOL
+                    + PhoenixRuntime.JDBC_PROTOCOL_SEPARATOR + "remote")) {
+                    return false;
+                }
                 // A connection string of the form "jdbc:phoenix://" means that
                 // the driver is remote which isn't supported, so return false.
                 if (!url.startsWith(DNC_JDBC_PROTOCOL_SUFFIX, protoLength)) {
