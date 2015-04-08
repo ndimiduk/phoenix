@@ -39,6 +39,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -441,7 +442,11 @@ public class PhoenixPreparedStatement extends PhoenixStatement implements Prepar
     public void setObject(int parameterIndex, Object o, int targetSqlType) throws SQLException {
         PDataType targetType = PDataType.fromTypeId(targetSqlType);
         PDataType sourceType = PDataType.fromLiteral(o);
-        o = targetType.toObject(o, sourceType);
+        if (o instanceof String && targetSqlType == Types.INTEGER) {
+            o = Integer.valueOf((String)o);
+        } else {
+            o = targetType.toObject(o, sourceType);
+        }
         setParameter(parameterIndex, o);
     }
 

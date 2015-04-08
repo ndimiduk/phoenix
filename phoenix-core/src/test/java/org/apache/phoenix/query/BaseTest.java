@@ -470,7 +470,7 @@ public abstract class BaseTest {
         return conf.get(QueryServices.ZOOKEEPER_PORT_ATTRIB);
     }
     
-    private static String url;
+    protected static String url;
     protected static PhoenixTestDriver driver;
     private static boolean clusterInitialized = false;
     private static HBaseTestingUtility utility;
@@ -758,7 +758,7 @@ public abstract class BaseTest {
                     stmt.setBytes(i+1, splits[i]);
                 }
             }
-            stmt.execute(ddl);
+            stmt.execute();
         } catch (TableAlreadyExistsException e) {
             if (! swallowTableAlreadyExistsException) {
                 throw e;
